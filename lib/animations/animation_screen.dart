@@ -11,6 +11,9 @@ class AnimationScreen extends StatefulWidget {
 
 class _AnimationScreenState extends State<AnimationScreen>
     with SingleTickerProviderStateMixin {
+  late AnimationController _counterClockwiseRotationController;
+  late Animation<double> _counterClockwiseRotationAnimation;
+
   late AnimationController _controller;
   late Animation<double> _animation;
   @override
