@@ -42,8 +42,18 @@ class _AnimationScreenState extends State<AnimationScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(width: 100, height: 100, color: Colors.red),
-                Container(width: 100, height: 100, color: Colors.black87),
+                ClipPath(
+                  clipper: HalfCircleClipper(side: CircleSide.left),
+                  child: Container(width: 100, height: 100, color: Colors.red),
+                ),
+                ClipPath(
+                  clipper: HalfCircleClipper(side: CircleSide.right),
+                  child: Container(
+                    width: 100,
+                    height: 100,
+                    color: Colors.black87,
+                  ),
+                ),
               ],
             ),
             SizedBox(height: 50),
