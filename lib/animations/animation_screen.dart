@@ -23,6 +23,8 @@ class _AnimationScreenState extends State<AnimationScreen>
     );
 
     _animation = Tween<double>(begin: 0, end: 2 * pi).animate(_controller);
+
+    _controller.repeat();
   }
 
   @override
@@ -35,7 +37,33 @@ class _AnimationScreenState extends State<AnimationScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: const Center(child: Text('This is the Animation Screen')),
+      body: Center(
+        child: AnimatedBuilder(
+          animation: _controller,
+          builder: (context, child) {
+            return Transform(
+              alignment: Alignment.center,
+              // origin: const Offset(50, 50),
+              transform: Matrix4.identity()..rotateY(_animation.value),
+              child: Container(
+                width: 200,
+                height: 200,
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.5),
+                      blurRadius: 10,
+                      offset: const Offset(0, 5),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        ),
+      ),
     );
   }
 }
