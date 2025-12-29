@@ -10,7 +10,7 @@ class AnimationScreen extends StatefulWidget {
 }
 
 class _AnimationScreenState extends State<AnimationScreen>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   late AnimationController _counterClockwiseRotationController;
   late Animation<double> _counterClockwiseRotationAnimation;
 
@@ -21,13 +21,25 @@ class _AnimationScreenState extends State<AnimationScreen>
     super.initState();
 
     _controller = AnimationController(
-      duration: const Duration(seconds: 2),
+      duration: const Duration(seconds: 1),
       vsync: this,
     );
 
     _animation = Tween<double>(begin: 0, end: 2 * pi).animate(_controller);
 
     _controller.repeat();
+
+    _counterClockwiseRotationController = AnimationController(
+      duration: const Duration(seconds: 1),
+      vsync: this,
+    );
+
+    _counterClockwiseRotationAnimation = Tween<double>(
+      begin: 0,
+      end: -(2 / pi),
+    ).animate(_counterClockwiseRotationController);
+
+    _counterClockwiseRotationController.repeat();
   }
 
   @override
