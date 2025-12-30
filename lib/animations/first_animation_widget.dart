@@ -42,19 +42,51 @@ class _FirstAnimationWidgetState extends State<FirstAnimationWidget>
     );
     _counterClockwiseRotationController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
+        // Use the current animation value (radians), not the controller's
+        // normalized value (0..1). Recreate the tween so the flip continues
+        // from the current rotation value.
         _flipAnimation =
             Tween<double>(
-              begin: _flipController.value,
-              end: _flipController.value + pi,
+              begin: _flipAnimation.value,
+              end: _flipAnimation.value + pi,
             ).animate(
               CurvedAnimation(parent: _flipController, curve: Curves.bounceOut),
             );
-        (() {
-          _flipController
-            ..reset()
-            ..forward();
-        }).delayed(Duration(milliseconds: 500));
+
+        _flipController
+          ..reset()
+          ..forward();
       }
+    });
+
+    _flipController.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        // Continue the rotation from the current animation value (radians).
+        _counterClockwiseRotationAnimation =
+            Tween<double>(
+              begin: _counterClockwiseRotationAnimation.value,
+              end: _counterClockwiseRotationAnimation.value + -(pi / 2),
+            ).animate(
+              CurvedAnimation(
+                parent: _counterClockwiseRotationController,
+                curve: Curves.bounceOut,
+              ),
+            );
+
+        _counterClockwiseRotationController
+          ..reset()
+          ..forward();
+      }
+    });
+
+    // Start the first animation once after the first frame with a small delay.
+    // Avoid starting animations from build() which can be called many times.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Future.delayed(const Duration(seconds: 1), () {
+        _counterClockwiseRotationController
+          ..reset()
+          ..forward();
+      });
     });
   }
 
@@ -67,11 +99,9 @@ class _FirstAnimationWidgetState extends State<FirstAnimationWidget>
 
   @override
   Widget build(BuildContext context) {
-    (() {
-      _counterClockwiseRotationController
-        ..reset()
-        ..forward();
-    }).delayed(Duration(seconds: 1));
+    // NOTE: don't start animations here — starting in build schedules a new
+    // delayed start on every rebuild which creates unexpected behavior.
+    // Initial start is scheduled once in initState instead.
     return Column(
       children: [
         AnimatedBuilder(
@@ -115,12 +145,6 @@ class _FirstAnimationWidgetState extends State<FirstAnimationWidget>
         SizedBox(height: 50),
       ],
     );
-  }
-}
-
-extension on VoidCallback {
-  Future<void> delayed(Duration delay) {
-    return Future.delayed(delay, this);
   }
 }
 
