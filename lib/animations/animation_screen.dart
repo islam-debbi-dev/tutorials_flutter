@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:tutorials_flutter/animations/first_animation_widget.dart';
-import 'package:tutorials_flutter/animations/second_animation_widget.dart';
+import 'package:tutorials_flutter/animations/widgets/first_animation_widget.dart';
+
+import 'widgets/change_colors_animation.dart';
+import 'widgets/drawer/my_drawer.dart';
 
 class AnimationScreen extends StatefulWidget {
   const AnimationScreen({super.key});
@@ -12,74 +14,35 @@ class AnimationScreen extends StatefulWidget {
 class _AnimationScreenState extends State<AnimationScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            const FirstAnimationWidget(),
-            SizedBox(height: 50),
-            const SecondAnimationWidget(),
-            const SizedBox(height: 50),
-            const ImplicitAnimationWidget(),
-          ],
+    return MyDrawer(
+      drawer: Material(
+        child: Container(
+          color: const Color.fromARGB(255, 17, 32, 45),
+          child: ListView.builder(
+            itemCount: 7,
+            itemBuilder: (context, index) {
+              return ListTile(title: Text('Item ${index + 1}'));
+            },
+          ),
         ),
       ),
-    );
-  }
-}
+      child: Scaffold(
+        appBar: AppBar(title: const Text('Animations Screen')),
+        body: SafeArea(
+          child: Column(
+            children: [
+              // const FirstAnimationWidget(),
+              // SizedBox(height: 50),
+              // // const SecondAnimationWidget(),
+              // const SizedBox(height: 50),
 
-class ImplicitAnimationWidget extends StatefulWidget {
-  const ImplicitAnimationWidget({super.key});
-
-  @override
-  State<ImplicitAnimationWidget> createState() =>
-      _ImplicitAnimationWidgetState();
-}
-
-class _ImplicitAnimationWidgetState extends State<ImplicitAnimationWidget> {
-  var isZoomed = false;
-  var isZoomedText = 'zoom in';
-  var widthImage = 100.00;
-  final _curve = Curves.fastEaseInToSlowEaseOut;
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            AnimatedContainer(
-              curve: _curve,
-              duration: Duration(seconds: 1),
-              width: widthImage,
-              color: Colors.blue,
-              child: Image.asset(
-                'assets/images/images1.png',
-                // // make the image fill the container so width changes are visible
-                // width: double.infinity,
-                // fit: BoxFit.cover,
-              ),
-            ),
-          ],
+              // // const ImplicitAnimationWidget(),
+              // // const SizedBox(height: 50),
+              // const ChangeColorsAnimation(),
+            ],
+          ),
         ),
-
-        TextButton(
-          onPressed: () {
-            setState(() {
-              if (isZoomed) {
-                isZoomed = false;
-                isZoomedText = 'zoom in';
-                widthImage = 100.00;
-              } else {
-                isZoomed = true;
-                isZoomedText = 'zoom out';
-                widthImage = MediaQuery.of(context).size.width;
-              }
-            });
-          },
-          child: Text(isZoomedText),
-        ),
-      ],
+      ),
     );
   }
 }
