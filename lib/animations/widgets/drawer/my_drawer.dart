@@ -28,7 +28,7 @@ class _MyDrawerState extends State<MyDrawer> with TickerProviderStateMixin {
     );
 
     _XRotationAnimationForChild = Tween<double>(
-      begin: 0.0,
+      begin: 0,
       end: -math.pi / 2.7,
     ).animate(_xControllerForChild);
 
@@ -75,30 +75,31 @@ class _MyDrawerState extends State<MyDrawer> with TickerProviderStateMixin {
       child: Stack(
         children: [
           Container(color: const Color.fromARGB(255, 24, 18, 18)),
+
           AnimatedBuilder(
-            animation: _XRotationAnimationForDrawer,
+            animation: _XRotationAnimationForChild,
             builder: (context, child) {
               return Transform(
                 alignment: Alignment.centerLeft,
                 transform: Matrix4.identity()
                   ..setEntry(3, 2, 0.001)
                   ..translate(_xControllerForChild.value * maxDrag)
-                  ..rotateY(_XRotationAnimationForDrawer.value),
+                  ..rotateY(_XRotationAnimationForChild.value),
                 child: widget.child,
               );
             },
           ),
           AnimatedBuilder(
-            animation: _XRotationAnimationForChild,
+            animation: _XRotationAnimationForDrawer,
             builder: (context, child) {
               return Transform(
                 alignment: Alignment.centerRight,
                 transform: Matrix4.identity()
                   ..setEntry(3, 2, 0.001)
                   ..translate(
-                    -screenWidth + _xControllerForChild.value * maxDrag,
+                    -screenWidth + _xControllerForDrawer.value * maxDrag,
                   )
-                  ..rotateY(_XRotationAnimationForChild.value),
+                  ..rotateY(_XRotationAnimationForDrawer.value),
                 child: widget.drawer,
               );
             },

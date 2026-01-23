@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tutorials_flutter/animations/widgets/first_animation_widget.dart';
 
-import 'widgets/change_colors_animation.dart';
 import 'widgets/drawer/my_drawer.dart';
 
 class AnimationScreen extends StatefulWidget {
@@ -18,11 +16,19 @@ class _AnimationScreenState extends State<AnimationScreen> {
       drawer: Material(
         child: Container(
           color: const Color.fromARGB(255, 17, 32, 45),
-          child: ListView.builder(
-            itemCount: 7,
-            itemBuilder: (context, index) {
-              return ListTile(title: Text('Item ${index + 1}'));
-            },
+          child: Padding(
+            padding: const EdgeInsets.only(left: 100, top: 50),
+            child: ListView.builder(
+              itemCount: 7,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(
+                    'Item ${index + 1}',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                );
+              },
+            ),
           ),
         ),
       ),
