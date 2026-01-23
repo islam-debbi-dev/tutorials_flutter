@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
+import 'widgets/change_colors_animation.dart';
 import 'widgets/drawer/my_drawer.dart';
+import 'widgets/first_animation_widget.dart';
+import 'widgets/implicit_animation_widget.dart';
+import 'widgets/second_animation_widget.dart';
 
 class AnimationScreen extends StatefulWidget {
   const AnimationScreen({super.key});
@@ -35,17 +39,19 @@ class _AnimationScreenState extends State<AnimationScreen> {
       child: Scaffold(
         appBar: AppBar(title: const Text('Animations Screen')),
         body: SafeArea(
-          child: Column(
-            children: [
-              // const FirstAnimationWidget(),
-              // SizedBox(height: 50),
-              // // const SecondAnimationWidget(),
-              // const SizedBox(height: 50),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                const FirstAnimationWidget(),
+                SizedBox(height: 50),
+                const SecondAnimationWidget(),
+                const SizedBox(height: 50),
 
-              // // const ImplicitAnimationWidget(),
-              // // const SizedBox(height: 50),
-              // const ChangeColorsAnimation(),
-            ],
+                const ImplicitAnimationWidget(),
+                const SizedBox(height: 50),
+                const ChangeColorsAnimation(),
+              ],
+            ),
           ),
         ),
       ),
