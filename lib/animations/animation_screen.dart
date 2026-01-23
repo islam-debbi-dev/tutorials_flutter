@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:tutorials_flutter/animations/widgets/first_animation_widget.dart';
 
 import 'widgets/change_colors_animation.dart';
 import 'widgets/drawer/my_drawer.dart';
+import 'widgets/first_animation_widget.dart';
+import 'widgets/implicit_animation_widget.dart';
+import 'widgets/second_animation_widget.dart';
 
 class AnimationScreen extends StatefulWidget {
   const AnimationScreen({super.key});
@@ -18,28 +20,38 @@ class _AnimationScreenState extends State<AnimationScreen> {
       drawer: Material(
         child: Container(
           color: const Color.fromARGB(255, 17, 32, 45),
-          child: ListView.builder(
-            itemCount: 7,
-            itemBuilder: (context, index) {
-              return ListTile(title: Text('Item ${index + 1}'));
-            },
+          child: Padding(
+            padding: const EdgeInsets.only(left: 100, top: 50),
+            child: ListView.builder(
+              itemCount: 7,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(
+                    'Item ${index + 1}',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                );
+              },
+            ),
           ),
         ),
       ),
       child: Scaffold(
         appBar: AppBar(title: const Text('Animations Screen')),
         body: SafeArea(
-          child: Column(
-            children: [
-              // const FirstAnimationWidget(),
-              // SizedBox(height: 50),
-              // // const SecondAnimationWidget(),
-              // const SizedBox(height: 50),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                const FirstAnimationWidget(),
+                SizedBox(height: 50),
+                const SecondAnimationWidget(),
+                const SizedBox(height: 50),
 
-              // // const ImplicitAnimationWidget(),
-              // // const SizedBox(height: 50),
-              // const ChangeColorsAnimation(),
-            ],
+                const ImplicitAnimationWidget(),
+                const SizedBox(height: 50),
+                const ChangeColorsAnimation(),
+              ],
+            ),
           ),
         ),
       ),
