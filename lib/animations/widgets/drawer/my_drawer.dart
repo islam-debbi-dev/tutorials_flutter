@@ -12,10 +12,10 @@ class MyDrawer extends StatefulWidget {
 
 class _MyDrawerState extends State<MyDrawer> with TickerProviderStateMixin {
   late AnimationController _xControllerForChild;
-  late Animation<double> _XRotationAnimationForChild;
+  late Animation<double> _yRotationAnimationForChild;
 
   late AnimationController _xControllerForDrawer;
-  late Animation<double> _XRotationAnimationForDrawer;
+  late Animation<double> _yRotationAnimationForDrawer;
 
   @override
   void initState() {
@@ -27,9 +27,9 @@ class _MyDrawerState extends State<MyDrawer> with TickerProviderStateMixin {
       duration: const Duration(milliseconds: 500),
     );
 
-    _XRotationAnimationForChild = Tween<double>(
+    _yRotationAnimationForChild = Tween<double>(
       begin: 0,
-      end: -math.pi / 2.7,
+      end: -math.pi / 2,
     ).animate(_xControllerForChild);
 
     _xControllerForDrawer = AnimationController(
@@ -37,9 +37,9 @@ class _MyDrawerState extends State<MyDrawer> with TickerProviderStateMixin {
       duration: const Duration(milliseconds: 500),
     );
 
-    _XRotationAnimationForDrawer = Tween<double>(
-      begin: -math.pi / 2.7,
-      end: 0.0,
+    _yRotationAnimationForDrawer = Tween<double>(
+      begin: math.pi / 2.7,
+      end: 0,
     ).animate(_xControllerForDrawer);
   }
 
@@ -58,53 +58,49 @@ class _MyDrawerState extends State<MyDrawer> with TickerProviderStateMixin {
     return GestureDetector(
       onHorizontalDragUpdate: (details) {
         final delta = details.delta.dx / maxDrag;
-
-        // Dragging to the right
         _xControllerForChild.value += delta;
         _xControllerForDrawer.value += delta;
       },
       onHorizontalDragEnd: (details) {
-        if (_xControllerForChild.value >= 0.5) {
-          _xControllerForChild.forward();
-          _xControllerForDrawer.forward();
-        } else {
+        if (_xControllerForChild.value < 0.5) {
           _xControllerForChild.reverse();
           _xControllerForDrawer.reverse();
+        } else {
+          _xControllerForChild.forward();
+          _xControllerForDrawer.forward();
         }
       },
-      child: Stack(
-        children: [
-          Container(color: const Color.fromARGB(255, 24, 18, 18)),
+      child: AnimatedBuilder(
+        animation: Listenable.merge([
+          _xControllerForChild,
+          _xControllerForDrawer,
+        ]),
+        builder: (context, child) {
+          return Stack(
+            children: [
+              Container(color: const Color.fromARGB(255, 24, 18, 18)),
 
-          AnimatedBuilder(
-            animation: _XRotationAnimationForChild,
-            builder: (context, child) {
-              return Transform(
+              Transform(
                 alignment: Alignment.centerLeft,
                 transform: Matrix4.identity()
                   ..setEntry(3, 2, 0.001)
                   ..translate(_xControllerForChild.value * maxDrag)
-                  ..rotateY(_XRotationAnimationForChild.value),
+                  ..rotateY(_yRotationAnimationForChild.value),
                 child: widget.child,
-              );
-            },
-          ),
-          AnimatedBuilder(
-            animation: _XRotationAnimationForDrawer,
-            builder: (context, child) {
-              return Transform(
+              ),
+              Transform(
                 alignment: Alignment.centerRight,
                 transform: Matrix4.identity()
                   ..setEntry(3, 2, 0.001)
                   ..translate(
                     -screenWidth + _xControllerForDrawer.value * maxDrag,
                   )
-                  ..rotateY(_XRotationAnimationForDrawer.value),
+                  ..rotateY(_yRotationAnimationForDrawer.value),
                 child: widget.drawer,
-              );
-            },
-          ),
-        ],
+              ),
+            ],
+          );
+        },
       ),
     );
   }
