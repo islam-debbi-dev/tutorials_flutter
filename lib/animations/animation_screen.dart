@@ -4,6 +4,7 @@ import 'widgets/change_colors_animation.dart';
 import 'widgets/drawer/my_drawer.dart';
 import 'widgets/first_animation_widget.dart';
 import 'widgets/implicit_animation_widget.dart';
+import 'widgets/scaling_animation.dart';
 import 'widgets/second_animation_widget.dart';
 
 class AnimationScreen extends StatefulWidget {
@@ -46,7 +47,7 @@ class _AnimationScreenState extends State<AnimationScreen> {
                 SizedBox(height: 50),
                 const SecondAnimationWidget(),
                 const SizedBox(height: 50),
-
+                const ScalingAnimation(),
                 const ImplicitAnimationWidget(),
                 const SizedBox(height: 50),
                 const ChangeColorsAnimation(),
